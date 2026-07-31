@@ -1,15 +1,17 @@
 {
   "short_name": "Slangify",
   "name": "Slangify - Modern English Hub",
+  "description": "Learn English slang, idioms, and vocabulary.",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#0f172a",
   "icons": [
     {
       "src": "favicon.svg",
       "type": "image/svg+xml",
-      "sizes": "512x512"
+      "sizes": "192x192 512x512",
+      "purpose": "any maskable"
     }
-  ],
-  "start_url": ".",
-  "background_color": "#0f172a",
-  "theme_color": "#0f172a",
-  "display": "standalone"
+  ]
 }
