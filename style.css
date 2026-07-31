@@ -977,3 +977,25 @@ html, body {
         display: none !important;
     }
 }
+
+/* Samsung & High-DPI Android strict overflow lock */
+*, *::before, *::after {
+    box-sizing: border-box !important;
+}
+
+body {
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow-x: hidden !important;
+}
+
+/* Ensure images and tables never overflow screen width */
+img, table, div, section {
+    max-width: 100% !important;
+}
+
+.table-responsive {
+    width: 100% !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+}
