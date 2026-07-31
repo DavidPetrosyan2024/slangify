@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slangify - Modern English Hub</title>
+
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#8B5CF6">
+
+    <link rel="stylesheet" href="style.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body class="dark-mode">
+
+    <!-- HEADER & NAVBAR -->
+    <header class="navbar">
+        <div class="logo">
+            <span class="logo-icon">⚡</span>
+            <span class="logo-text">Slangify</span>
+        </div>
+
+        <nav class="nav-links">
+            <a href="#hero" class="nav-link active">Home</a>
+            <a href="#dictionary" class="nav-link">Dictionary</a>
+            <a href="#games" class="nav-link">Games</a>
+            <a href="#leaderboard" class="nav-link">Leaderboard</a>
+            <a href="#about" class="nav-link">About Us</a>
+        </nav>
+
+        <div class="header-actions">
+            <div class="search-box">
+                <span class="search-icon">🔍</span>
+                <input type="text" id="globalSearch" placeholder="Search 3000+ words..." autocomplete="off">
+            </div>
+
+            <!-- Light / Dark Mode Toggle Button -->
+            <button id="themeToggleBtn" class="btn-theme-toggle" title="Toggle Light/Dark Mode">☀️</button>
+            <button id="btnInstallApp" class="btn-install" style="display: none;">📱 Install App</button>
+        </div>
+    </header>
+
+    <main>
+        <!-- HERO SECTION -->
+        <section id="hero" class="hero-section">
+            <div class="hero-content">
+                <span class="badge-hero">🚀 C1 Advanced & Gen-Z English</span>
+                <h1>Master Modern English <br><span class="highlight">They Don't Teach in School</span></h1>
+                <p>Explore 3,000+ real-life idioms, slang, and advanced phrases with instant British/American
+                    pronunciation and games.</p>
+
+                <div class="hero-buttons">
+                    <a href="#dictionary" class="btn btn-primary">📚 Open Dictionary</a>
+                    <a href="#games" class="btn btn-secondary">🎮 Play Games</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- WORD OF THE DAY SECTION -->
+        <section class="container">
+            <div class="wod-card" id="wordOfTheDayCard">
+                <div class="wod-header">
+                    <span class="wod-badge">🔥 Word of the Day</span>
+                    <span class="wod-level" id="wodLevel">C1 Level</span>
+                </div>
+
+                <h2 id="wodTitle">Spill the tea</h2>
+
+                <!-- AUDIO CONTROLS BAR -->
+                <div class="audio-controls-bar">
+                    <button class="btn-audio" onclick="playAudio(document.getElementById('wodTitle').innerText)">
+                        🔊 Listen
+                    </button>
+
+                    <!-- Accent Selector (US / UK) -->
+                    <select id="wodAccentSelect" class="audio-select" onchange="changeAccent(this.value)"
+                        title="Choose Accent">
+                        <option value="en-US">US</option>
+                        <option value="en-GB">UK</option>
+                    </select>
+
+                    <!-- Voice Selection (Male / Female) -->
+                    <select id="wodVoiceSelect" class="audio-select" title="Choose Voice">
+                        <option value="">Loading voices...</option>
+                    </select>
+                </div>
+
+                <p class="wod-def"><strong>Meaning:</strong> <span id="wodMeaning">To reveal gossip or secret
+                        information.</span></p>
+                <p class="wod-example"><strong>Example:</strong> "<span id="wodExample">Come on, spill the tea! What
+                        happened last night?</span>"</p>
+                <p class="wod-arm"><strong>Armenian:</strong> <span id="wodArm">Գաղտնիքը բացել / Բամբասել</span></p>
+            </div>
+        </section>
+
+        <!-- DICTIONARY SECTION -->
+        <section id="dictionary" class="container">
+            <div class="section-title">
+                <h2>📚 Complete Dictionary</h2>
+                <p>Filter by level or category</p>
+            </div>
+
+            <!-- ADD CUSTOM IDIOM BUTTON -->
+            <div class="add-word-container" style="margin-bottom: 20px; text-align: center;">
+                <button id="btnOpenModal" class="btn btn-primary">➕ Add Custom Idiom / Slang</button>
+            </div>
+
+            <div class="filter-bar">
+                <button class="filter-btn active" data-level="all">All (3000+)</button>
+                <button class="filter-btn" data-level="favorites">⭐ Favorites</button>
+                <button class="filter-btn" data-level="a1_a2">A1 - A2 (Basic)</button>
+                <button class="filter-btn" data-level="b1_b2">B1 - B2 (Intermediate)</button>
+                <button class="filter-btn" data-level="c1_c2">C1 - C2 (Advanced)</button>
+                <button class="filter-btn" data-level="slang">Slang & Gaming</button>
+            </div>
+
+            <div class="cards-grid" id="dictionaryGrid"></div>
+
+            <div class="load-more-container">
+                <button id="btnLoadMore" class="btn btn-secondary">Load More Words 👇</button>
+            </div>
+        </section>
+
+        <!-- MINI-GAMES SECTION -->
+        <section id="games" class="container games-section">
+            <div class="section-title">
+                <h2>🎮 Interactive Mini-Games</h2>
+                <p>Test your knowledge with dynamic games generated from our dictionary</p>
+            </div>
+
+            <div class="game-tabs">
+                <button class="game-tab-btn active" onclick="switchGame('quiz')">🕹️ Multiple Choice Quiz</button>
+                <button class="game-tab-btn" onclick="switchGame('match')">🧩 Match the Cards</button>
+                <button class="game-tab-btn" onclick="switchGame('scramble')">🔤 Word Scramble</button>
+            </div>
+
+            <!-- GAME 1: QUIZ -->
+            <div id="gameQuiz" class="game-box active">
+                <div class="game-header">
+                    <span id="quizProgress">Question 1/10</span>
+                    <span id="quizScore" class="score-badge">Score: 0</span>
+                </div>
+                <h3 id="quizQuestion" class="game-question">Loading Question...</h3>
+                <div class="options-grid" id="quizOptions"></div>
+                <button id="btnNextQuiz" class="btn btn-primary" style="display:none;" onclick="nextQuizQuestion()">Next
+                    Question ➔</button>
+            </div>
+
+            <!-- GAME 2: MATCH -->
+            <div id="gameMatch" class="game-box" style="display: none;">
+                <div class="game-header">
+                    <span>Match English Idioms with Armenian Translations</span>
+                    <span id="matchScore" class="score-badge">Pairs Left: 4</span>
+                </div>
+                <div class="match-grid" id="matchGrid"></div>
+                <button class="btn btn-secondary" onclick="initMatchGame()" style="margin-top: 15px;">🔄 Reset
+                    Cards</button>
+            </div>
+
+            <!-- GAME 3: SCRAMBLE -->
+            <div id="gameScramble" class="game-box" style="display: none;">
+                <div class="game-header">
+                    <h3>🔤 Word Scramble</h3>
+                    <span id="scrambleScore" class="score-badge">Score: 0</span>
+                </div>
+                
+                <p id="scrambleProgress" style="font-weight: 600; opacity: 0.8; margin-top: 10px;"></p>
+                <h2 id="scrambleQuestion" class="scrambled-text" style="letter-spacing: 4px; color: var(--accent); margin: 15px 0;"></h2>
+                <p id="scrambleHint" class="hint-text" style="font-style: italic; margin-bottom: 15px;"></p>
+                
+                <div class="scramble-input-group" style="display: flex; gap: 10px; align-items: center; justify-content: center; flex-wrap: wrap;">
+                    <!-- 🚫 Spellcheck & Autocorrect Disabled -->
+                    <input type="text" id="scrambleInput" placeholder="Type the correct phrase..." autocomplete="off" spellcheck="false" autocorrect="off" autocapitalize="off">
+                    <button type="button" id="btnSubmitScramble" class="btn btn-primary">Check Answer ➔</button>
+                </div>
+                
+                <p id="scrambleFeedback" class="feedback-text" style="margin-top: 15px; font-weight: 600;"></p>
+            </div>
+        </section>
+
+        <!-- LEADERBOARD SECTION -->
+        <section id="leaderboard" class="container leaderboard-section">
+            <div class="section-title">
+                <h2>🏆 Global Leaderboard</h2>
+                <p>Track your XP and see where you rank among Slangify learners!</p>
+            </div>
+
+            <div class="leaderboard-card">
+                <!-- User Current Status Banner -->
+                <div class="user-stats-banner">
+                    <div class="stat-item">
+                        <span class="stat-label">Your Current Rank</span>
+                        <span id="userRank" class="stat-value">🐣 Novice</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Total Experience</span>
+                        <span id="userTotalXP" class="stat-value">0 XP</span>
+                    </div>
+                </div>
+
+                <!-- Leaderboard Table -->
+                <div class="table-responsive">
+                    <table class="leaderboard-table">
+                        <thead>
+                            <tr>
+                                <th>Rank</th>
+                                <th>Player</th>
+                                <th>Title</th>
+                                <th>Experience</th>
+                            </tr>
+                        </thead>
+                        <tbody id="leaderboardList">
+                            <!-- Dynamic Rows populated by script.js -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- ABOUT US SECTION -->
+        <section id="about" class="container about-section">
+            <div class="section-title">
+                <h2>👥 About The Project</h2>
+                <p>10th Grade Integrated School Project</p>
+            </div>
+
+            <div class="about-card">
+                <div class="about-info">
+                    <h3>💡 Project Mission</h3>
+                    <p><strong>Slangify</strong> was created as an interactive educational hub designed to bridge the
+                        gap between traditional textbook English and modern, real-world communication. Featuring over
+                        3,000 idioms, internet slang terms, C1-C2 advanced expressions, and gaming vocabulary, Slangify
+                        makes learning engaging, auditory, and practical.</p>
+                </div>
+
+                <div class="authors-grid">
+                    <div class="author-card">
+                        <div class="author-avatar">👨‍💻</div>
+                        <h4>David Petrosyan</h4>
+                        <span class="author-role">Co-Developer & Tech Lead</span>
+                        <p>10th Grade Student | Web Architecture, Frontend Development & Systems Design.</p>
+                    </div>
+
+                    <div class="author-card">
+                        <div class="author-avatar">👩‍💻</div>
+                        <h4>Elizaveta Tokmajyan</h4>
+                        <span class="author-role">Co-Developer & Content Lead</span>
+                        <p>10th Grade Student | Linguistics Analysis, Content Curation & Resource Structuring.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ADD WORD MODAL POPUP -->
+        <div id="addWordModal" class="modal">
+            <div class="modal-content">
+                <span class="close-modal" id="btnCloseModal">&times;</span>
+                <h2>➕ Add New Phrase</h2>
+                <form id="addWordForm">
+                    <div class="form-group">
+                        <label for="newWord">Phrase / Idiom:</label>
+                        <input type="text" id="newWord" placeholder="e.g. Laugh your head off" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="newLevel">Level / Category:</label>
+                        <select id="newLevel" class="audio-select">
+                            <option value="slang">Slang & Gaming</option>
+                            <option value="a1_a2">A1 - A2 (Basic)</option>
+                            <option value="b1_b2">B1 - B2 (Intermediate)</option>
+                            <option value="c1_c2">C1 - C2 (Advanced)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="newMeaning">English Meaning:</label>
+                        <input type="text" id="newMeaning" placeholder="e.g. To laugh extremely hard" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="newExample">Example Sentence:</label>
+                        <input type="text" id="newExample"
+                            placeholder="e.g. The joke was so funny I laughed my head off!" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="newArm">Armenian Translation:</label>
+                        <input type="text" id="newArm" placeholder="e.g. Ծիծաղից թուլանալ" required>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 10px;">Create Card
+                        ✨</button>
+                </form>
+            </div>
+        </div>
+        
+    </main>
+
+    <footer>
+        <div class="container footer-content">
+            <p>⚡ <strong>Slangify</strong> — Created by David Petrosyan & Elizaveta Tokmajyan</p>
+            <p>High School Integrated Project | Hosted on GitHub Pages</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
