@@ -1102,3 +1102,23 @@ async function loadAllDatabases() {
         console.error("Error loading databases:", error);
     }
 }
+
+async function loadA1A2Words() {
+    try {
+        const response = await fetch('data/a1_a2.json');
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        console.log(`✅ Success! Loaded ${data.length} entries from a1_a2.json:`, data);
+        
+        // Կանչիր քո ցուցադրման ֆունկցիան
+        if (typeof displayWords === 'function') {
+            displayWords(data);
+        }
+    } catch (error) {
+        console.error("❌ Error loading A1-A2 database:", error);
+    }
+}
+
+document.addEventListener('DOMContentLoaded', loadA1A2Words);
