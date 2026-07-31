@@ -899,3 +899,81 @@ html, body {
         display: none; /* Hides Title column on mobile to fit Experience */
     }
 }
+
+/* ==========================================================================
+   STRICT MOBILE RESPONSIVE FIX (NO HORIZONTAL SCROLL)
+   ========================================================================== */
+
+/* 1. Global Viewport Lock */
+html, body {
+    max-width: 100% !important;
+    overflow-x: hidden !important;
+    position: relative;
+}
+
+/* 2. Header & Navbar Mobile Layout */
+@media (max-width: 768px) {
+    .navbar {
+        flex-direction: column !important;
+        align-items: center !important;
+        padding: 10px !important;
+        gap: 12px !important;
+    }
+
+    .nav-links {
+        display: flex !important;
+        flex-wrap: wrap !important;
+        justify-content: center !important;
+        gap: 8px 12px !important;
+        width: 100% !important;
+    }
+
+    .nav-links a {
+        font-size: 0.85rem !important;
+        padding: 4px 6px !important;
+    }
+
+    .header-actions {
+        width: 100% !important;
+        justify-content: center !important;
+    }
+
+    .search-box input {
+        width: 100% !important;
+        max-width: 280px !important;
+    }
+}
+
+/* 3. Leaderboard Mobile Table Fix */
+@media (max-width: 600px) {
+    .leaderboard-card {
+        padding: 12px 8px !important;
+        margin: 0 5px !important;
+    }
+
+    .user-stats-banner {
+        flex-direction: row !important;
+        justify-content: space-between !important;
+        padding: 10px !important;
+    }
+
+    .stat-label {
+        font-size: 0.75rem !important;
+    }
+
+    .stat-value {
+        font-size: 1rem !important;
+    }
+
+    .leaderboard-table th, 
+    .leaderboard-table td {
+        padding: 8px 4px !important;
+        font-size: 0.75rem !important;
+    }
+
+    /* Hide 'Title' column on mobile screens to fit Experience (XP) properly */
+    .leaderboard-table th:nth-child(3),
+    .leaderboard-table td:nth-child(3) {
+        display: none !important;
+    }
+}
