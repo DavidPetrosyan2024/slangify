@@ -1080,3 +1080,25 @@ function toggleScrambleReview() {
 
     gameBox.appendChild(reviewBox);
 }
+
+// Dynamic Multi-Database Loader
+async function loadAllDatabases() {
+    const files = [
+        'data/a1_a2.json',
+        'data/b1_b2.json',
+        'data/c1_c2.json',
+        'data/slang_gaming.json'
+    ];
+
+    try {
+        const responses = await Promise.all(files.map(file => fetch(file)));
+        const dataArrays = await Promise.all(responses.map(res => res.json()));
+        
+        // Merge all words into single master database
+        const masterDatabase = dataArrays.flat();
+        console.log(`Loaded ${masterDatabase.length} entries successfully!`);
+        return masterDatabase;
+    } catch (error) {
+        console.error("Error loading databases:", error);
+    }
+}
