@@ -1161,3 +1161,73 @@ async function loadAllDatabases() {
 }
 
 document.addEventListener('DOMContentLoaded', loadAllDatabases);
+
+// Գլոբալ զանգված՝ բոլոր բազաների բառերը պահելու համար
+let allWords = [];
+
+async function loadA1A2Words() {
+  try {
+    const response = await fetch('data/a1_a2.json');
+    const data = await response.json();
+    console.log(`✅ Loaded ${data.length} A1-A2 words`);
+    return data;
+  } catch (e) { console.error(e); return []; }
+}
+
+async function loadB1B2Words() {
+  try {
+    const response = await fetch('data/b1_b2.json');
+    const data = await response.json();
+    console.log(`✅ Loaded ${data.length} B1-B2 words`);
+    return data;
+  } catch (e) { console.error(e); return []; }
+}
+
+async function loadC1C2Words() {
+  try {
+    const response = await fetch('data/c1_c2.json');
+    const data = await response.json();
+    console.log(`✅ Loaded ${data.length} C1-C2 words`);
+    return data;
+  } catch (e) { console.error(e); return []; }
+}
+
+// 1. Միացնում ենք բոլոր բազաները
+async function loadAllDatabases() {
+  const a1_a2 = await loadA1A2Words();
+  const b1_b2 = await loadB1B2Words();
+  const c1_c2 = await loadC1C2Words();
+
+  // Միավորում ենք բոլորը մեկ մեծ ցուցակի մեջ
+  allWords = [...a1_a2, ...b1_b2, ...c1_c2];
+  console.log(`🚀 TOTAL WORDS LOADED: ${allWords.length}`);
+
+  // 2. Ավտոմատ գեներացնում ենք քարտերը կայքում
+  renderCards(allWords);
+}
+
+// 3. Քարտերը HTML-ում տեղադրող ֆունկցիա
+function renderCards(wordsArray) {
+  const container = document.getElementById('words-container'); // Քո քարտերի div-ի ID-ն
+  if (!container) return;
+
+  container.innerHTML = ''; // Մաքրում ենք հին քարտերը
+
+  wordsArray.forEach(item => {
+    const card = document.createElement('div');
+    card.className = 'word-card';
+    card.innerHTML = `
+      <div class="card-header">
+        <span class="word-title">${item.word}</span>
+        <span class="badge ${item.level.toLowerCase()}">${item.level}</span>
+      </div>
+      <p class="pronunciation">${item.pronunciation || ''}</p>
+      <p class="definition"><strong>Def:</strong> ${item.definition}</p>
+      <p class="armenian"><strong>Հայերեն:</strong> ${item.armenian}</p>
+      <p class="example"><em>"${item.example}"</em></p>
+    `;
+    container.appendChild(card);
+  });
+}
+
+document.addEventListener('DOMContentLoaded', loadAllDatabases);

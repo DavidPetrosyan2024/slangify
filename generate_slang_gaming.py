@@ -1,0 +1,18 @@
+import json
+import os
+
+os.makedirs('data', exist_ok=True)
+
+gaming_words = [
+  {"word": "AFK", "level": "Gaming", "type": "Slang", "definition": "Away From Keyboard.", "armenian": "Ստեղնաշարից հեռու / Բացակա", "example": "He went AFK during the match.", "pronunciation": "/ˌeɪ ef ˈkeɪ/"},
+  {"word": "Clutch", "level": "Gaming", "type": "Slang", "definition": "To win a high-pressure situation unexpectedly.", "armenian": "Վճռորոշ հաղթանակ անհնարին պահին", "example": "He clutched a 1v4 round in CS:GO!", "pronunciation": "/klʌtʃ/"},
+  {"word": "Nerf", "level": "Gaming", "type": "Slang", "definition": "To reduce the power of a game element.", "armenian": "Թուլացնել (զենքը/հերոսին)", "example": "Developers nerfed the sniper rifle in the new update.", "pronunciation": "/nɜːf/"},
+  {"word": "Buff", "level": "Gaming", "type": "Slang", "definition": "To increase the power of a game element.", "armenian": "Ուժեղացնել (զենքը/հերոսին)", "example": "They buffed the magic damage this patch.", "pronunciation": "/bʌf/"},
+  {"word": "Gank", "level": "Gaming", "type": "Slang", "definition": "To ambush an opponent with numerical advantage.", "armenian": "Դարանակալել, հանկարծակի հարձակվել", "example": "Watch out, enemy jungler is coming to gank!", "pronunciation": "/ɡæŋk/"},
+  {"word": "GG", "level": "Gaming", "type": "Slang", "definition": "Good Game (said at the end of a match).", "armenian": "Լավ խաղ էր", "example": "GG WP to all players!", "pronunciation": "/dʒiː dʒiː/"}
+]
+
+with open('data/slang_gaming.json', 'w', encoding='utf-8') as f:
+    json.dump(gaming_words, f, ensure_ascii=False, indent=2)
+
+print(f"🎉 SUCCESS: Generated data/slang_gaming.json with {len(gaming_words)} entries!")
