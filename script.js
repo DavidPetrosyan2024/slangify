@@ -221,7 +221,7 @@ function updateWordOfTheDay() {
 function renderCards(words, resetPagination = true) {
     if (resetPagination) {
         currentDisplayedWords = words;
-        visibleCardsCount = 8; // Reset back to initial 8 cards
+        visibleCardsCount = 8;
     }
 
     const grid = document.getElementById('dictionaryGrid') || document.getElementById('words-container');
@@ -234,22 +234,24 @@ function renderCards(words, resetPagination = true) {
         return;
     }
 
-    // Slice to only show current visible amount (8, 16, 24...)
     const wordsToRender = currentDisplayedWords.slice(0, visibleCardsCount);
 
     wordsToRender.forEach(item => {
         const isFav = favoriteWords.some(f => f.word === item.word);
         
-        // 1. Մաքրում ենք տակից գծիկները (_) -> դարձնում ենք "A1 A2" կամ "A1"
-        let rawLevel = item.level ? item.level.toString() : 'general';
-        let displayLevel = rawLevel.replace(/_/g, ' ').toUpperCase(); 
+        // 🎯 Tag-ի մշակումը. "a1_a2" -> "A1", "b1_b2" -> "B1", "c1_c2" -> "C1"
+        let rawLevel = item.level ? item.level.toString().toLowerCase() : 'general';
+        let displayLevel = rawLevel.replace(/_/g, ' ').toUpperCase();
+
+        if (rawLevel === 'a1_a2') displayLevel = 'A1';
+        else if (rawLevel === 'b1_b2') displayLevel = 'B1';
+        else if (rawLevel === 'c1_c2') displayLevel = 'C1';
 
         const meaningText = item.meaning || item.definition || '';
         const armText = item.arm || item.armenian || '';
         const exampleText = item.example ? `"${item.example}"` : '';
 
-        // Class-ի համար վերցնում ենք մաքուր տեքստ (a1a2, a1, b1b2, c1c2, slang)
-        const cleanClassTag = rawLevel.toLowerCase().replace(/[^a-z0-9]/g, '');
+        const cleanClassTag = rawLevel.replace(/[^a-z0-9]/g, '');
 
         const card = document.createElement('div');
         card.className = 'word-card';
@@ -275,33 +277,6 @@ function renderCards(words, resetPagination = true) {
     });
 
     updateLoadMoreButton();
-}
-
-function updateLoadMoreButton() {
-    let loadMoreBtn = document.getElementById('btnLoadMore');
-    
-    // Create button dynamically if not found in HTML
-    if (!loadMoreBtn) {
-        const grid = document.getElementById('dictionaryGrid') || document.getElementById('words-container');
-        if (grid && grid.parentElement) {
-            loadMoreBtn = document.createElement('button');
-            loadMoreBtn.id = 'btnLoadMore';
-            loadMoreBtn.className = 'btn btn-secondary';
-            loadMoreBtn.style.display = 'block';
-            loadMoreBtn.style.margin = '30px 0';
-            loadMoreBtn.onclick = loadMoreWords;
-            grid.parentElement.appendChild(loadMoreBtn);
-        }
-    }
-
-    if (loadMoreBtn) {
-        if (visibleCardsCount >= currentDisplayedWords.length) {
-            loadMoreBtn.style.display = 'none';
-        } else {
-            loadMoreBtn.style.display = 'block';
-            loadMoreBtn.innerText = 'Load More Words';
-        }
-    }
 }
 
 // ==========================================
