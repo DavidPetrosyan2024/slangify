@@ -19,6 +19,9 @@ let customWords = JSON.parse(localStorage.getItem('customSlangWords')) || [];
 let favoriteWords = JSON.parse(localStorage.getItem('favoriteSlangWords')) || [];
 let allWords = [...sampleWords, ...customWords];
 
+// Setup current displayed list immediately so it doesn't stay empty
+currentDisplayedWords = [...allWords];
+
 // ==========================================
 // 🏆 GLOBAL XP & LEADERBOARD
 // ==========================================
@@ -199,7 +202,7 @@ if ('speechSynthesis' in window) {
 }
 
 // ==========================================
-// 3. WORD OF THE DAY (Yerevan Timezone 00:00 reset)
+// 3. WORD OF THE DAY
 // ==========================================
 function updateWordOfTheDay() {
     if (!allWords || allWords.length === 0) return;
@@ -297,6 +300,32 @@ function renderCards(words, resetPagination = true) {
     });
 
     updateLoadMoreButton();
+}
+
+// ==========================================
+// FILTER BUTTONS EVENT LISTENERS
+// ==========================================
+function setupFilterButtons() {
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    filterBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            filterBtns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            const level = btn.getAttribute('data-level');
+            if (level === 'all') {
+                renderCards(allWords);
+            } else if (level === 'favorites') {
+                renderCards(favoriteWords);
+            } else {
+                const filtered = allWords.filter(w => {
+                    const wordLevel = (w.level || '').toLowerCase().replace('-', '_');
+                    return wordLevel === level.toLowerCase();
+                });
+                renderCards(filtered);
+            }
+        });
+    });
 }
 
 // ==========================================
@@ -610,6 +639,10 @@ async function fetchJSON(path) {
 }
 
 async function loadAllDatabases() {
+    // Render initial sample words instantly!
+    renderCards(allWords);
+    setupFilterButtons();
+
     const [a1_a2, b1_b2, c1_c2, slang_gaming] = await Promise.all([
         fetchJSON('data/a1_a2.json'),
         fetchJSON('data/b1_b2.json'),
@@ -617,8 +650,10 @@ async function loadAllDatabases() {
         fetchJSON('data/slang_gaming.json')
     ]);
 
+    // Merge full dataset
     allWords = [...sampleWords, ...customWords, ...a1_a2, ...b1_b2, ...c1_c2, ...slang_gaming];
 
+    // Re-render with full dataset loaded
     renderCards(allWords);
     updateWordOfTheDay();
     updateLeaderboardUI();
