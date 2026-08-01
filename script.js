@@ -73,6 +73,21 @@ function updateLeaderboardUI() {
 }
 
 // ==========================================
+// FAVOURITES LOGIC
+// ==========================================
+function toggleFavorite(wordText) {
+    const index = favoriteWords.findIndex(f => f.word === wordText);
+    if (index > -1) {
+        favoriteWords.splice(index, 1);
+    } else {
+        const found = allWords.find(w => w.word === wordText);
+        if (found) favoriteWords.push(found);
+    }
+    localStorage.setItem('favoriteSlangWords', JSON.stringify(favoriteWords));
+    renderCards(currentDisplayedWords, false);
+}
+
+// ==========================================
 // 1. LIGHT / DARK THEME TOGGLE
 // ==========================================
 const themeToggleBtn = document.getElementById('themeToggleBtn');
@@ -622,26 +637,13 @@ function loadMoreWords() {
 }
 
 function updateLoadMoreButton() {
-    let loadMoreBtn = document.getElementById('btnLoadMore');
-    const grid = document.getElementById('dictionaryGrid') || document.getElementById('words-container');
-    
-    if (!loadMoreBtn && grid && grid.parentElement) {
-        loadMoreBtn = document.createElement('button');
-        loadMoreBtn.id = 'btnLoadMore';
-        loadMoreBtn.className = 'btn btn-secondary';
-        loadMoreBtn.style.display = 'block';
-        loadMoreBtn.style.margin = '30px auto';
-        loadMoreBtn.onclick = loadMoreWords;
-        grid.parentElement.appendChild(loadMoreBtn);
-    }
+    const loadMoreBtn = document.getElementById('btnLoadMore');
+    if (!loadMoreBtn) return;
 
-    if (loadMoreBtn) {
-        if (!currentDisplayedWords || visibleCardsCount >= currentDisplayedWords.length) {
-            loadMoreBtn.style.display = 'none';
-        } else {
-            loadMoreBtn.style.display = 'block';
-            loadMoreBtn.innerText = 'Load More Words';
-        }
+    if (!currentDisplayedWords || visibleCardsCount >= currentDisplayedWords.length) {
+        loadMoreBtn.style.display = 'none';
+    } else {
+        loadMoreBtn.style.display = 'inline-block';
     }
 }
 
