@@ -1053,22 +1053,27 @@ function renderCards(words, resetPagination = true) {
         const cardLevel = item.level ? item.level.toUpperCase() : 'GENERAL';
         const meaningText = item.meaning || item.definition || '';
         const armText = item.arm || item.armenian || '';
+        const exampleText = item.example ? `"${item.example}"` : '';
 
         const card = document.createElement('div');
         card.className = 'word-card';
         card.innerHTML = `
-            <div class="card-top" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-                <span class="card-title" style="font-size:1.2rem; font-weight:700;">${item.word}</span>
-                <div style="display:flex; align-items:center; gap:8px;">
-                    <span class="card-tag tag-${item.level}" style="font-size:0.8rem; opacity:0.8;">${cardLevel}</span>
-                    <button class="btn-fav ${isFav ? 'active' : ''}" onclick="toggleFavorite('${item.word.replace(/'/g, "\\'")}')" title="Save to Favorites">
+            <div class="card-top" style="display: flex; justify- justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
+                <h3 class="card-title" style="font-size: 1.35rem; font-weight: 700; color: #ffffff; margin: 0;">${item.word}</h3>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <span class="card-tag tag-${item.level.toLowerCase()}">${cardLevel}</span>
+                    <button class="btn-fav ${isFav ? 'active' : ''}" onclick="toggleFavorite('${item.word.replace(/'/g, "\\'")}')" title="Save to Favorites" style="background: none; border: none; cursor: pointer; color: #a1a1aa; font-size: 1.2rem; padding: 0;">
                         ${isFav ? '⭐' : '☆'}
                     </button>
                 </div>
             </div>
-            <p class="card-def" style="margin-bottom:6px;"><strong>Meaning:</strong> ${meaningText}</p>
-            <p class="card-ex" style="font-style:italic; margin-bottom:10px; opacity:0.9;">"${item.example || ''}"</p>
-            <div class="card-arm">🇦🇲 ${armText}</div>
+            <p class="card-def" style="margin-bottom: 8px; color: #e4e4e7; font-size: 0.95rem;">
+                <strong style="color: #a1a1aa;">Meaning:</strong> ${meaningText}
+            </p>
+            ${exampleText ? `<p class="card-ex" style="font-style: italic; margin-bottom: 12px; color: #a1a1aa; font-size: 0.9rem;">${exampleText}</p>` : ''}
+            <div class="card-arm" style="color: #38bdf8; font-size: 0.9rem; font-weight: 500; display: flex; align-items: center; gap: 6px;">
+                <span style="font-size: 0.8rem; font-weight: bold; color: #0284c7;">AM</span> ${armText}
+            </div>
         `;
         grid.appendChild(card);
     });
@@ -1087,7 +1092,7 @@ function updateLoadMoreButton() {
             loadMoreBtn.id = 'btnLoadMore';
             loadMoreBtn.className = 'btn btn-secondary';
             loadMoreBtn.style.display = 'block';
-            loadMoreBtn.style.margin = '20px auto';
+            loadMoreBtn.style.margin = '30px 0';
             loadMoreBtn.onclick = loadMoreWords;
             grid.parentElement.appendChild(loadMoreBtn);
         }
@@ -1098,81 +1103,9 @@ function updateLoadMoreButton() {
             loadMoreBtn.style.display = 'none';
         } else {
             loadMoreBtn.style.display = 'block';
-            loadMoreBtn.innerText = `Load More Words (${currentDisplayedWords.length - visibleCardsCount} left)`;
+            loadMoreBtn.innerText = 'Load More Words'; // Հեռացված է թիվը
         }
     }
-}
-
-function hideLoadMoreButton() {
-    const loadMoreBtn = document.getElementById('btnLoadMore');
-    if (loadMoreBtn) loadMoreBtn.style.display = 'none';
-}
-
-function loadMoreWords() {
-    visibleCardsCount += 8;
-    renderCards(currentDisplayedWords, false);
-}
-
-function toggleFavorite(wordTitle) {
-    const targetWord = allWords.find(w => w.word === wordTitle);
-    if (!targetWord) return;
-
-    const index = favoriteWords.findIndex(f => f.word === wordTitle);
-
-    if (index > -1) {
-        favoriteWords.splice(index, 1);
-    } else {
-        favoriteWords.push(targetWord);
-    }
-
-    localStorage.setItem('favoriteSlangWords', JSON.stringify(favoriteWords));
-
-    const activeFilter = document.querySelector('.filter-btn.active');
-    if (activeFilter && activeFilter.dataset.level === 'favorites') {
-        renderCards(favoriteWords);
-    } else {
-        renderCards(currentDisplayedWords, false);
-    }
-}
-
-document.querySelectorAll('.filter-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        
-        const level = btn.dataset.level;
-
-        if (level === 'all') {
-            renderCards(allWords);
-        } else if (level === 'favorites') {
-            renderCards(favoriteWords);
-        } else {
-            renderCards(allWords.filter(w => w.level === level));
-        }
-    });
-});
-
-// SEARCH
-const globalSearchInput = document.getElementById('globalSearch');
-if (globalSearchInput) {
-    globalSearchInput.addEventListener('input', (e) => {
-        const query = e.target.value.toLowerCase().trim();
-
-        if (query === '') {
-            renderCards(allWords);
-            return;
-        }
-
-        const filteredWords = allWords.filter(item => {
-            const matchesWord = item.word.toLowerCase().includes(query);
-            const matchesMeaning = (item.meaning || item.definition || '').toLowerCase().includes(query);
-            const matchesArm = (item.arm || item.armenian || '').toLowerCase().includes(query);
-
-            return matchesWord || matchesMeaning || matchesArm;
-        });
-
-        renderCards(filteredWords);
-    });
 }
 
 // ==========================================
