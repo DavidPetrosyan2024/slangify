@@ -620,3 +620,18 @@ async function loadAllDatabases() {
 
 // App Initialization
 document.addEventListener('DOMContentLoaded', loadAllDatabases);
+
+let visibleCardsCount = 8;
+let currentDisplayedWords = [];
+
+// ==========================================
+// LOAD MORE WORDS FUNCTION
+// ==========================================
+function loadMoreWords() {
+    // Ավելացնում ենք 8 քարտ visibleCardsCount-ին
+    visibleCardsCount += 8;
+    
+    // Կանչում ենք renderCards-ը resetPagination = false փոխանցելով, 
+    // որպեսզի ցուցակը չզրոյանա, այլ պարզապես ավելանան նոր բառերը
+    renderCards(currentDisplayedWords, false);
+}
