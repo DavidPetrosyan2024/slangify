@@ -1,3 +1,10 @@
+// ==========================================
+// GLOBAL VARIABLES (Always at the top)
+// ==========================================
+let visibleCardsCount = 8;
+let currentDisplayedWords = [];
+let availableVoices = [];
+
 // Base Dictionary Data
 const sampleWords = [
     { word: "Spill the tea", level: "slang", meaning: "To reveal gossip or secret information.", example: "Come on, spill the tea! What happened last night?", arm: "Գաղտնիքը բացել / Բամբասել" },
@@ -11,11 +18,6 @@ const sampleWords = [
 let customWords = JSON.parse(localStorage.getItem('customSlangWords')) || [];
 let favoriteWords = JSON.parse(localStorage.getItem('favoriteSlangWords')) || [];
 let allWords = [...sampleWords, ...customWords];
-let availableVoices = [];
-
-// PAGINATION VARIABLES (8 Cards Per Page)
-let currentDisplayedWords = [];
-let visibleCardsCount = 8;
 
 // ==========================================
 // 🏆 GLOBAL XP & LEADERBOARD
@@ -187,10 +189,8 @@ if ('speechSynthesis' in window) {
 function updateWordOfTheDay() {
     if (!allWords || allWords.length === 0) return;
 
-    // Get current date string formatted for Armenia (Yerevan) timezone
     const yerevanDateStr = new Date().toLocaleDateString("en-US", { timeZone: "Asia/Yerevan" });
     
-    // Create a unique hash number from date string (e.g. "8/1/2026")
     let hash = 0;
     for (let i = 0; i < yerevanDateStr.length; i++) {
         hash = yerevanDateStr.charCodeAt(i) + ((hash << 5) - hash);
@@ -216,7 +216,7 @@ function updateWordOfTheDay() {
 }
 
 // ==========================================
-// 4. RENDER CARDS & PAGINATION (8 items per click)
+// 4. RENDER CARDS & PAGINATION
 // ==========================================
 function renderCards(words, resetPagination = true) {
     if (resetPagination) {
@@ -241,18 +241,14 @@ function renderCards(words, resetPagination = true) {
         
         let rawLevel = item.level ? item.level.toString().trim().toUpperCase() : 'GENERAL';
         
-        // 🎯 Ճիշտ որոշում ենք մակարդակը
         let displayLevel = rawLevel;
-        
         if (rawLevel === 'A1_A2' || rawLevel === 'A1 A2') {
-            // Եթե բառը հատուկ նշված է A2 կամ ունի A2 ID/prop, դնում է A2, հակառակ դեպքում A1
             displayLevel = item.subLevel ? item.subLevel.toUpperCase() : 'A1';
         } else if (rawLevel === 'B1_B2' || rawLevel === 'B1 B2') {
             displayLevel = item.subLevel ? item.subLevel.toUpperCase() : 'B1';
         } else if (rawLevel === 'C1_C2' || rawLevel === 'C1 C2') {
             displayLevel = item.subLevel ? item.subLevel.toUpperCase() : 'C1';
         } else {
-            // Եթե արդեն մաքուր A1, A2, B1, B2, C1, C2 կամ SLANG է
             displayLevel = rawLevel.replace(/_/g, ' ');
         }
 
@@ -260,7 +256,6 @@ function renderCards(words, resetPagination = true) {
         const armText = item.arm || item.armenian || '';
         const exampleText = item.example ? `"${item.example}"` : '';
 
-        // Class tag CSS-ի համար (tag-a1, tag-a2, tag-b1...)
         const cleanClassTag = displayLevel.toLowerCase().replace(/[^a-z0-9]/g, '');
 
         const card = document.createElement('div');
@@ -600,7 +595,6 @@ async function fetchJSON(path) {
 }
 
 async function loadAllDatabases() {
-    // 4 Դատաբազաների բեռնում `data/` թղթապանակից
     const [a1_a2, b1_b2, c1_c2, slang_gaming] = await Promise.all([
         fetchJSON('data/a1_a2.json'),
         fetchJSON('data/b1_b2.json'),
@@ -608,10 +602,8 @@ async function loadAllDatabases() {
         fetchJSON('data/slang_gaming.json')
     ]);
 
-    // Միավորում ենք բոլոր բառերը մեկ տեղում
     allWords = [...sampleWords, ...customWords, ...a1_a2, ...b1_b2, ...c1_c2, ...slang_gaming];
 
-    // Թարմացնում ենք UI-ը
     renderCards(allWords);
     updateWordOfTheDay();
     updateLeaderboardUI();
@@ -621,17 +613,39 @@ async function loadAllDatabases() {
 // App Initialization
 document.addEventListener('DOMContentLoaded', loadAllDatabases);
 
-let visibleCardsCount = 8;
-let currentDisplayedWords = [];
-
 // ==========================================
-// LOAD MORE WORDS FUNCTION
+// 8. LOAD MORE & BUTTON CONTROL
 // ==========================================
 function loadMoreWords() {
-    // Ավելացնում ենք 8 քարտ visibleCardsCount-ին
     visibleCardsCount += 8;
-    
-    // Կանչում ենք renderCards-ը resetPagination = false փոխանցելով, 
-    // որպեսզի ցուցակը չզրոյանա, այլ պարզապես ավելանան նոր բառերը
     renderCards(currentDisplayedWords, false);
+}
+
+function updateLoadMoreButton() {
+    let loadMoreBtn = document.getElementById('btnLoadMore');
+    const grid = document.getElementById('dictionaryGrid') || document.getElementById('words-container');
+    
+    if (!loadMoreBtn && grid && grid.parentElement) {
+        loadMoreBtn = document.createElement('button');
+        loadMoreBtn.id = 'btnLoadMore';
+        loadMoreBtn.className = 'btn btn-secondary';
+        loadMoreBtn.style.display = 'block';
+        loadMoreBtn.style.margin = '30px auto';
+        loadMoreBtn.onclick = loadMoreWords;
+        grid.parentElement.appendChild(loadMoreBtn);
+    }
+
+    if (loadMoreBtn) {
+        if (!currentDisplayedWords || visibleCardsCount >= currentDisplayedWords.length) {
+            loadMoreBtn.style.display = 'none';
+        } else {
+            loadMoreBtn.style.display = 'block';
+            loadMoreBtn.innerText = 'Load More Words';
+        }
+    }
+}
+
+function hideLoadMoreButton() {
+    const loadMoreBtn = document.getElementById('btnLoadMore');
+    if (loadMoreBtn) loadMoreBtn.style.display = 'none';
 }
