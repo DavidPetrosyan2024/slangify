@@ -999,3 +999,95 @@ img, table, div, section {
     overflow-x: auto !important;
     -webkit-overflow-scrolling: touch;
 }
+
+/* Ընդհանուր Tag-երի դիզայնը */
+.card-tag {
+    padding: 4px 10px;
+    border-radius: 8px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    display: inline-block;
+    background: rgba(255, 255, 255, 0.1);
+    color: #e4e4e7;
+}
+
+/* Ըստ մակարդակների գույները */
+.card-tag.tag-slang {
+    background: rgba(217, 119, 6, 0.2);
+    color: #f59e0b;
+}
+
+.card-tag.tag-a1a2, .card-tag.tag-a1, .card-tag.tag-a2 {
+    background: rgba(16, 185, 129, 0.2);
+    color: #10b981;
+}
+
+.card-tag.tag-b1b2, .card-tag.tag-b1, .card-tag.tag-b2 {
+    background: rgba(14, 165, 233, 0.2);
+    color: #38bdf8;
+}
+
+.card-tag.tag-c1c2, .card-tag.tag-c1, .card-tag.tag-c2 {
+    background: rgba(168, 85, 247, 0.2);
+    color: #c084fc;
+}
+
+/* Ընդհանուր Tag-երի դիզայնը բոլոր քարտերի համար */
+.card-tag {
+    padding: 4px 10px;
+    border-radius: 8px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    display: inline-block;
+    background: rgba(255, 255, 255, 0.1); /* Default background */
+    color: #e4e4e7;
+}
+
+/* Slang Tag */
+.card-tag.tag-slang {
+    background: rgba(217, 119, 6, 0.2);
+    color: #f59e0b;
+}
+
+/* A1 / A2 / A1_A2 Tag-եր (կանաչ) */
+.card-tag.tag-a1a2, 
+.card-tag.tag-a1, 
+.card-tag.tag-a2 {
+    background: rgba(16, 185, 129, 0.2);
+    color: #10b981;
+}
+
+/* B1 / B2 / B1_B2 Tag-եր (կապույտ) */
+.card-tag.tag-b1b2, 
+.card-tag.tag-b1, 
+.card-tag.tag-b2 {
+    background: rgba(14, 165, 233, 0.2);
+    color: #38bdf8;
+}
+
+/* C1 / C2 / C1_C2 Tag-եր (մանուշակագույն) */
+.card-tag.tag-c1c2, 
+.card-tag.tag-c1, 
+.card-tag.tag-c2 {
+    background: rgba(168, 85, 247, 0.2);
+    color: #c084fc;
+}
+
+.card-tag.tag-a1a2, .card-tag.tag-a1, .card-tag.tag-a2 {
+    background: rgba(16, 185, 129, 0.2);
+    color: #10b981;
+}
+
+.card-tag.tag-b1b2, .card-tag.tag-b1, .card-tag.tag-b2 {
+    background: rgba(14, 165, 233, 0.2);
+    color: #38bdf8;
+}
+
+.card-tag.tag-c1c2, .card-tag.tag-c1, .card-tag.tag-c2 {
+    background: rgba(168, 85, 247, 0.2);
+    color: #c084fc;
+}
+
+/* alias gitup="python generate_a1_a2.py && python generate_b1_b2.py && python generate_c1_c2.py && python generate_slang_gaming.py && git add . && git commit -m 'Auto update databases and frontend' && git push" */
