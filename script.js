@@ -1121,8 +1121,6 @@ async function loadA1A2Words() {
     }
 }
 
-document.addEventListener('DOMContentLoaded', loadA1A2Words);
-
 // Register PWA Service Worker
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
@@ -1144,5 +1142,11 @@ async function loadB1B2Words() {
   }
 }
 
-// Կանչիր ֆունկցիան էջը բացվելիս
-loadB1B2Words();
+// Բոլոր բազաները միասին բեռնող գլխավոր ֆունկցիա
+async function loadAllDatabases() {
+  await loadA1A2Words();
+  await loadB1B2Words();
+}
+
+// Աշխատեցնում ենք, երբ էջի DOM-ը պատրաստ է
+document.addEventListener('DOMContentLoaded', loadAllDatabases);
