@@ -1163,7 +1163,7 @@ async function loadAllDatabases() {
 document.addEventListener('DOMContentLoaded', loadAllDatabases);
 
 // Գլոբալ զանգված՝ բոլոր բազաների բառերը պահելու համար
-let allWords = [];
+allWords = [];
 
 async function loadA1A2Words() {
   try {
