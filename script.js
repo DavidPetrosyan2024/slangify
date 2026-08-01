@@ -1150,3 +1150,21 @@ async function loadAllDatabases() {
 
 // Աշխատեցնում ենք, երբ էջի DOM-ը պատրաստ է
 document.addEventListener('DOMContentLoaded', loadAllDatabases);
+
+async function loadC1C2Words() {
+  try {
+    const response = await fetch('data/c1_c2.json');
+    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+    const data = await response.json();
+    console.log(`✅ Success! Loaded ${data.length} entries from c1_c2.json:`, data);
+    return data;
+  } catch (error) {
+    console.error("❌ Error loading C1-C2 database:", error);
+  }
+}
+
+async function loadAllDatabases() {
+  await loadA1A2Words();
+  await loadB1B2Words();
+  await loadC1C2Words();
+}
