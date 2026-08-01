@@ -1192,14 +1192,23 @@ async function loadC1C2Words() {
   } catch (e) { console.error(e); return []; }
 }
 
+async function loadslanggamingWords(){
+  try {
+    const response = await fetch('data/slang_gaming.json');
+    const data = await response.json();
+    console.log(`✅ Loaded ${data.length} Slang Gaming words`);
+    return data;
+  } catch (e) { console.error(e); return []; }
+}
 // 1. Միացնում ենք բոլոր բազաները
 async function loadAllDatabases() {
   const a1_a2 = await loadA1A2Words();
   const b1_b2 = await loadB1B2Words();
   const c1_c2 = await loadC1C2Words();
+  const slang_gaming = await loadslanggamingWords();
 
   // Միավորում ենք բոլորը մեկ մեծ ցուցակի մեջ
-  allWords = [...a1_a2, ...b1_b2, ...c1_c2];
+  allWords = [...a1_a2, ...b1_b2, ...c1_c2, ...slang_gaming];
   console.log(`🚀 TOTAL WORDS LOADED: ${allWords.length}`);
 
   // 2. Ավտոմատ գեներացնում ենք քարտերը կայքում
