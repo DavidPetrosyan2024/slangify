@@ -239,19 +239,29 @@ function renderCards(words, resetPagination = true) {
     wordsToRender.forEach(item => {
         const isFav = favoriteWords.some(f => f.word === item.word);
         
-        // 🎯 Tag-ի մշակումը. "a1_a2" -> "A1", "b1_b2" -> "B1", "c1_c2" -> "C1"
-        let rawLevel = item.level ? item.level.toString().toLowerCase() : 'general';
-        let displayLevel = rawLevel.replace(/_/g, ' ').toUpperCase();
-
-        if (rawLevel === 'a1_a2') displayLevel = 'A1';
-        else if (rawLevel === 'b1_b2') displayLevel = 'B1';
-        else if (rawLevel === 'c1_c2') displayLevel = 'C1';
+        let rawLevel = item.level ? item.level.toString().trim().toUpperCase() : 'GENERAL';
+        
+        // 🎯 Ճիշտ որոշում ենք մակարդակը
+        let displayLevel = rawLevel;
+        
+        if (rawLevel === 'A1_A2' || rawLevel === 'A1 A2') {
+            // Եթե բառը հատուկ նշված է A2 կամ ունի A2 ID/prop, դնում է A2, հակառակ դեպքում A1
+            displayLevel = item.subLevel ? item.subLevel.toUpperCase() : 'A1';
+        } else if (rawLevel === 'B1_B2' || rawLevel === 'B1 B2') {
+            displayLevel = item.subLevel ? item.subLevel.toUpperCase() : 'B1';
+        } else if (rawLevel === 'C1_C2' || rawLevel === 'C1 C2') {
+            displayLevel = item.subLevel ? item.subLevel.toUpperCase() : 'C1';
+        } else {
+            // Եթե արդեն մաքուր A1, A2, B1, B2, C1, C2 կամ SLANG է
+            displayLevel = rawLevel.replace(/_/g, ' ');
+        }
 
         const meaningText = item.meaning || item.definition || '';
         const armText = item.arm || item.armenian || '';
         const exampleText = item.example ? `"${item.example}"` : '';
 
-        const cleanClassTag = rawLevel.replace(/[^a-z0-9]/g, '');
+        // Class tag CSS-ի համար (tag-a1, tag-a2, tag-b1...)
+        const cleanClassTag = displayLevel.toLowerCase().replace(/[^a-z0-9]/g, '');
 
         const card = document.createElement('div');
         card.className = 'word-card';
