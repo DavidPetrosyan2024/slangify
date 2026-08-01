@@ -1131,3 +1131,18 @@ if ('serviceWorker' in navigator) {
       .catch(err => console.error('❌ Service Worker registration failed:', err));
   });
 }
+
+async function loadB1B2Words() {
+  try {
+    const response = await fetch('data/b1_b2.json');
+    if (!response.ok) throw new Error('Network response was not ok');
+    const data = await response.json();
+    console.log(`✅ Success! Loaded ${data.length} entries from b1_b2.json:`, data);
+    return data;
+  } catch (error) {
+    console.error('Error loading B1-B2 database:', error);
+  }
+}
+
+// Կանչիր ֆունկցիան էջը բացվելիս
+loadB1B2Words();
