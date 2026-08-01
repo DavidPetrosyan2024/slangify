@@ -1231,3 +1231,77 @@ function renderCards(wordsArray) {
 }
 
 document.addEventListener('DOMContentLoaded', loadAllDatabases);
+
+// 1. Ամբողջական բառարանը (բոլոր JSON-ների միացությունը)
+let allWords = []; 
+
+// Երբ JSON-ները բեռնվում են.
+async function loadAllData() {
+    const a1 = await fetch('data/a1_a2.json').then(r => r.json());
+    const b1 = await fetch('data/b1_b2.json').then(r => r.json());
+    const c1 = await fetch('data/c1_c2.json').then(r => r.json());
+    const slang = await fetch('data/slang_gaming.json').then(r => r.json());
+
+    // Միացնում ենք ԲՈԼՈՐ բառերը մեկ ընդհանուր զանգվածի մեջ
+    allWords = [...a1, ...b1, ...c1, ...slang];
+
+    // Սկսում ենք խաղերը արդեն ԱՄԲՈՂՋԱԿԱՆ բազայով
+    initQuizGame();
+    initMatchGame();
+    initScrambleGame();
+}
+
+// 2. Ֆունկցիա՝ զանգվածից պատահական N հատ տարր ընտրելու համար
+function getRandomWords(count) {
+    // Պատահականորեն խառնում ենք ամբողջական բառարանը
+    const shuffled = [...allWords].sort(() => 0.5 - Math.random());
+    return shuffled.slice(0, count);
+}
+
+// 3. Match Game-ի օրինակ՝ բոլոր բառերից 4 պատահական զույգ ընտրելու համար
+function initMatchGame() {
+    if (allWords.length === 0) return;
+
+    // Վերցնում ենք 4 պատահական բառ ԱՄԲՈՂՋ 3000+ բառարանից
+    const selectedWords = getRandomWords(4);
+    
+    // Կառուցում ենք Match game-ի քարտերը...
+    renderMatchCards(selectedWords);
+}
+
+function generateQuizQuestion() {
+    if (allWords.length < 4) return;
+
+    // 1. Վերցնում ենք 4 պատահական բառ ամբողջ բառարանից
+    const randomFour = getRandomWords(4);
+    
+    // 2. Առաջին բառը սարքում ենք ճիշտ պատասխանը
+    const correctAnswer = randomFour[0];
+    
+    // 3. Խառնում ենք 4 տարբերակները, որպեսզի ճիշտ պատասխանը միշտ առաջինը չլինի
+    const options = [...randomFour].sort(() => 0.5 - Math.random());
+
+    // 4. Նկարում ենք հարցը էկրանին
+    document.getElementById('quizQuestion').innerText = `What is the meaning of "${correctAnswer.word}"?`;
+    
+    // Options-ները լցնում ենք կոճակների մեջ...
+}
+
+function initScrambleGame() {
+    if (allWords.length === 0) return;
+
+    // 1. Վերցնում ենք 1 պատահական բառ ամբողջ բառարանից
+    const selected = getRandomWords(1)[0];
+    
+    // 2. Խառնում ենք բառի տառերը
+    const scrambled = selected.word
+        .split('')
+        .sort(() => 0.5 - Math.random())
+        .join('');
+
+    // 3. Տեղադրում ենք HTML-ում
+    document.getElementById('scrambleQuestion').innerText = scrambled;
+    document.getElementById('scrambleHint').innerText = `Hint: ${selected.arm || selected.meaning}`;
+    
+    // Ստուգման տրամաբանությունը...
+}
