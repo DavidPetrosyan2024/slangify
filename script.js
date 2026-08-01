@@ -1142,15 +1142,6 @@ async function loadB1B2Words() {
   }
 }
 
-// Բոլոր բազաները միասին բեռնող գլխավոր ֆունկցիա
-async function loadAllDatabases() {
-  await loadA1A2Words();
-  await loadB1B2Words();
-}
-
-// Աշխատեցնում ենք, երբ էջի DOM-ը պատրաստ է
-document.addEventListener('DOMContentLoaded', loadAllDatabases);
-
 async function loadC1C2Words() {
   try {
     const response = await fetch('data/c1_c2.json');
@@ -1168,3 +1159,5 @@ async function loadAllDatabases() {
   await loadB1B2Words();
   await loadC1C2Words();
 }
+
+document.addEventListener('DOMContentLoaded', loadAllDatabases);
