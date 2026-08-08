@@ -682,23 +682,44 @@ document.addEventListener('DOMContentLoaded', loadAllDatabases);
 // ==========================================
 // 8. LOAD MORE & BUTTON CONTROL
 // ==========================================
+
+const WORDS_PER_LOAD = 8;
+
+// Load 8 more words
 function loadMoreWords() {
-    visibleCardsCount += 8;
+    if (!currentDisplayedWords || currentDisplayedWords.length === 0) {
+        return;
+    }
+
+    // Add exactly 8 more cards
+    visibleCardsCount += WORDS_PER_LOAD;
+
+    // Render without resetting pagination
     renderCards(currentDisplayedWords, false);
 }
 
+// Update Load More button visibility
 function updateLoadMoreButton() {
     const loadMoreBtn = document.getElementById('btnLoadMore');
+
     if (!loadMoreBtn) return;
 
-    if (!currentDisplayedWords || visibleCardsCount >= currentDisplayedWords.length) {
+    // If there are no more words to show, hide the button
+    if (
+        !currentDisplayedWords ||
+        visibleCardsCount >= currentDisplayedWords.length
+    ) {
         loadMoreBtn.style.display = 'none';
     } else {
         loadMoreBtn.style.display = 'inline-block';
     }
 }
 
+// Hide Load More button
 function hideLoadMoreButton() {
     const loadMoreBtn = document.getElementById('btnLoadMore');
-    if (loadMoreBtn) loadMoreBtn.style.display = 'none';
+
+    if (loadMoreBtn) {
+        loadMoreBtn.style.display = 'none';
+    }
 }
