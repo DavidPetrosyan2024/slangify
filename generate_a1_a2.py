@@ -35,10 +35,10 @@ a1_a2_words = [
     ("Airport", "A1", "Noun", "A complex of runways and buildings for takeoff/landing.", "Օդանավակայան", "We arrived at the airport early in the morning.", "ˈeəpɔːt"),
     ("Album", "A2", "Noun", "A collection of audio recordings or photo records.", "Ալբոմ", "They released a new music album this week.", "ˈælbəm"),
     ("Alcohol", "A2", "Noun", "Drink containing ethanol.", "Ոգելից լիցք/ալկոհոլ", "Alcohol is strictly prohibited for minors.", "ˈælkəhɒl"),
-    ("Alive", "A2", "Adjective", "Having life; living; not dead.", "Ողջ, 活, Կենդանի", "The plant is still alive after two weeks.", "əˈlaɪv"),
+    ("Alive", "A2", "Adjective", "Having life; living; not dead.", "Ողջ, Կենդանի", "The plant is still alive after two weeks.", "əˈlaɪv"),
     ("All", "A1", "Determiner", "The whole quantity or extent of.", "Բոլորը, ամբողջը", "All the students passed the final exam.", "ɔːl"),
     ("Allow", "A2", "Verb", "Give permission on a request.", "Թույլատրել", "My parents allow me to play games on weekends.", "əˈlaʊ"),
-    ("Almost", "A2", "Adverb", "Not quite; very nearly.", "Գրեթե, σχεδόν", "I am almost finished with my dictionary feature.", "ˈɔːlməʊst"),
+    ("Almost", "A2", "Adverb", "Not quite; very nearly.", "Գրեթե", "I am almost finished with my dictionary feature.", "ˈɔːlməʊst"),
     ("Alone", "A2", "Adjective", "Having no one else present.", "Մենակ, առանձին", "He prefers to code alone in his room.", "əˈləʊn"),
     ("Along", "A2", "Preposition", "Moving in a constant direction on a path.", "Երկայնքով", "We walked along the river bank.", "əˈlɒŋ"),
     ("Already", "A2", "Adverb", "Before or by now.", "Արդեն", "I have already uploaded the latest updates to GitHub.", "ɔːlˈredi")
