@@ -558,3 +558,169 @@ footer { background: var(--bg-surface); border-top: 1px solid var(--border-color
     .authors-grid { grid-template-columns: 1fr; }
     .options-grid { grid-template-columns: 1fr; }
 }
+
+/* =========================================
+   MOBILE NAVBAR — BOOTSTRAP FIX
+   ========================================= */
+
+/* Hamburger button */
+.navbar-toggler {
+    width: 48px;
+    height: 44px;
+    padding: 0;
+    border: 1px solid rgba(120, 80, 255, 0.35) !important;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: none !important;
+}
+
+/* Remove Bootstrap's default hamburger icon */
+.navbar-toggler-icon {
+    background-image: none !important;
+    width: 25px;
+    height: 22px;
+    position: relative;
+    display: block;
+}
+
+/* Three hamburger lines */
+.navbar-toggler-icon::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 1px;
+
+    width: 25px;
+    height: 3px;
+
+    border-radius: 10px;
+
+    background: linear-gradient(
+        90deg,
+        #7657ff,
+        #35b9e8
+    );
+
+    box-shadow:
+        0 8px 0 #7657ff,
+        0 16px 0 #35b9e8;
+}
+
+
+/* =========================================
+   SEARCH + THEME BUTTON
+   ========================================= */
+
+.header-actions {
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+}
+
+/* Search takes available space */
+.search-box {
+    flex: 1;
+    min-width: 0;
+    max-width: 280px;
+}
+
+/* Small theme button */
+.btn-theme-toggle {
+    width: 42px !important;
+    height: 42px !important;
+
+    min-width: 42px !important;
+    padding: 0 !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    border-radius: 10px !important;
+
+    font-size: 20px !important;
+    line-height: 1 !important;
+
+    flex-shrink: 0;
+
+    background: transparent;
+}
+
+
+/* =========================================
+   MOBILE
+   ========================================= */
+
+@media (max-width: 991.98px) {
+
+    .navbar {
+        padding: 16px 16px !important;
+    }
+
+    .navbar-collapse {
+        width: 100%;
+    }
+
+    .navbar-nav {
+        width: 100%;
+    }
+
+    .navbar-nav .nav-link {
+        padding: 10px 0 !important;
+    }
+
+    /* Search and theme button stay on ONE row */
+    .header-actions {
+        flex-direction: row !important;
+        width: 100%;
+        margin-top: 8px;
+    }
+
+    .search-box {
+        width: auto !important;
+        max-width: none !important;
+        flex: 1 1 auto;
+    }
+
+    .btn-theme-toggle {
+        flex: 0 0 42px;
+    }
+}
+
+
+/* =========================================
+   VERY SMALL PHONES
+   ========================================= */
+
+@media (max-width: 380px) {
+
+    .navbar {
+        padding-left: 12px !important;
+        padding-right: 12px !important;
+    }
+
+    .logo {
+        font-size: 1.8rem !important;
+    }
+
+    .navbar-toggler {
+        width: 44px;
+        height: 42px;
+    }
+
+    .navbar-toggler-icon {
+        width: 23px;
+    }
+
+    .navbar-toggler-icon::before {
+        width: 23px;
+    }
+
+    .btn-theme-toggle {
+        width: 40px !important;
+        min-width: 40px !important;
+        height: 40px !important;
+    }
+}
