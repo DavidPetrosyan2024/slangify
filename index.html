@@ -125,7 +125,8 @@
             <div class="cards-grid" id="dictionaryGrid"></div>
 
             <div class="load-more-container">
-<button id="btnLoadMore" class="btn btn-secondary" onclick="loadMoreWords()" style="display: none;">Load More Words 👇</button>            </div>
+                <button id="btnLoadMore" class="btn btn-secondary" onclick="loadMoreWords()" style="display: none;">Load More Words 👇</button>
+            </div>
         </section>
 
         <!-- MINI-GAMES SECTION -->
@@ -136,9 +137,9 @@
             </div>
 
             <div class="game-tabs">
-                <button class="game-tab-btn active" onclick="switchGame('quiz')">🕹️ Multiple Choice Quiz</button>
-                <button class="game-tab-btn" onclick="switchGame('match')">🧩 Match the Cards</button>
-                <button class="game-tab-btn" onclick="switchGame('scramble')">🔤 Word Scramble</button>
+                <button class="game-tab-btn active" onclick="switchGame('quiz', this)">🕹️ Multiple Choice Quiz</button>
+                <button class="game-tab-btn" onclick="switchGame('match', this)">🧩 Match the Cards</button>
+                <button class="game-tab-btn" onclick="switchGame('scramble', this)">🔤 Word Scramble</button>
             </div>
 
             <!-- GAME 1: QUIZ -->
@@ -176,9 +177,8 @@
                 <p id="scrambleHint" class="hint-text" style="font-style: italic; margin-bottom: 15px;"></p>
                 
                 <div class="scramble-input-group" style="display: flex; gap: 10px; align-items: center; justify-content: center; flex-wrap: wrap;">
-                    <!-- 🚫 Spellcheck & Autocorrect Disabled -->
                     <input type="text" id="scrambleInput" placeholder="Type the correct phrase..." autocomplete="off" spellcheck="false" autocorrect="off" autocapitalize="off">
-                    <button type="button" id="btnSubmitScramble" class="btn btn-primary">Check Answer ➔</button>
+                    <button type="button" id="btnSubmitScramble" class="btn btn-primary" onclick="checkScrambleAnswer()">Check Answer ➔</button>
                 </div>
                 
                 <p id="scrambleFeedback" class="feedback-text" style="margin-top: 15px; font-weight: 600;"></p>
@@ -193,7 +193,6 @@
             </div>
 
             <div class="leaderboard-card">
-                <!-- User Current Status Banner -->
                 <div class="user-stats-banner">
                     <div class="stat-item">
                         <span class="stat-label">Your Current Rank</span>
@@ -205,7 +204,6 @@
                     </div>
                 </div>
 
-                <!-- Leaderboard Table -->
                 <div class="table-responsive">
                     <table class="leaderboard-table">
                         <thead>
@@ -217,7 +215,6 @@
                             </tr>
                         </thead>
                         <tbody id="leaderboardList">
-                            <!-- Dynamic Rows populated by script.js -->
                         </tbody>
                     </table>
                 </div>
@@ -295,8 +292,7 @@
                         <input type="text" id="newArm" placeholder="e.g. Ծիծաղից թուլանալ" required>
                     </div>
 
-                    <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 10px;">Create Card
-                        ✨</button>
+                    <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 10px;">Create Card ✨</button>
                 </form>
             </div>
         </div>

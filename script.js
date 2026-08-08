@@ -5,13 +5,16 @@ let visibleCardsCount = 8;
 let currentDisplayedWords = [];
 let availableVoices = [];
 
-// Base Dictionary Data
+// Base Dictionary Data (8 Initial Words)
 const sampleWords = [
     { word: "Spill the tea", level: "slang", meaning: "To reveal gossip or secret information.", example: "Come on, spill the tea! What happened last night?", arm: "Գաղտնիքը բացել / Բամբասել" },
     { word: "Hit the sack", level: "a1_a2", meaning: "To go to sleep.", example: "I'm extremely tired, time to hit the sack.", arm: "Քնելու գնալ" },
     { word: "Bite the bullet", level: "b1_b2", meaning: "To face a difficult situation with courage.", example: "You just have to bite the bullet and take the exam.", arm: "Ատամները սեղմել ու առաջ գնալ" },
     { word: "Clutch", level: "slang", meaning: "Doing something critical at the last possible moment.", example: "He scored in the last second, that was so clutch!", arm: "Վերջին վայրկյանին հաղթանակ ապահովող" },
-    { word: "Burn the midnight oil", level: "c1_c2", meaning: "To work or study late into the night.", example: "She burned the midnight oil to finish the project.", arm: "Մինչև ուշ գիշեր աշխատել" }
+    { word: "Burn the midnight oil", level: "c1_c2", meaning: "To work or study late into the night.", example: "She burned the midnight oil to finish the project.", arm: "Մինչև ուշ գիշեր աշխատել" },
+    { word: "Lowkey", level: "slang", meaning: "Secretly or subtly.", example: "I lowkey want to stay home tonight.", arm: "Ծածուկ, չբարձրաձայնվող" },
+    { word: "Glow up", level: "b1_b2", meaning: "A major positive transformation.", example: "His glow up after high school was insane.", arm: "Տեսքի/կյանքի կտրուկ բարելավում" },
+    { word: "Touch grass", level: "slang", meaning: "To go outside and disconnect from online.", example: "You've been gaming all day, go touch grass!", arm: "Իրականություն վերադառնալ, դուրս գալ" }
 ];
 
 // LocalStorage Data
@@ -19,7 +22,7 @@ let customWords = JSON.parse(localStorage.getItem('customSlangWords')) || [];
 let favoriteWords = JSON.parse(localStorage.getItem('favoriteSlangWords')) || [];
 let allWords = [...sampleWords, ...customWords];
 
-// Setup current displayed list immediately so it doesn't stay empty
+// Setup current displayed list
 currentDisplayedWords = [...allWords];
 
 // ==========================================
@@ -226,11 +229,6 @@ function updateWordOfTheDay() {
     if (wodMeaning) wodMeaning.innerText = todayWord.meaning || todayWord.definition || '';
     if (wodExample) wodExample.innerText = `"${todayWord.example || ''}"`;
     if (wodArm) wodArm.innerText = `🇦🇲 ${todayWord.arm || todayWord.armenian || ''}`;
-
-    const playBtn = document.getElementById('wodPlayBtn');
-    if (playBtn) {
-        playBtn.onclick = () => playAudio(todayWord.word);
-    }
 }
 
 // ==========================================
@@ -280,7 +278,7 @@ function renderCards(words, resetPagination = true) {
         card.className = 'word-card';
         card.innerHTML = `
             <div class="card-top" style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
-                <h3 class="card-title" style="font-size: 1.35rem; font-weight: 700; color: #ffffff; margin: 0;">${item.word}</h3>
+                <h3 class="card-title" style="font-size: 1.35rem; font-weight: 700; color: var(--text-main); margin: 0;">${item.word}</h3>
                 <div style="display: flex; align-items: center; gap: 8px;">
                     <span class="card-tag tag-${cleanClassTag}">${displayLevel}</span>
                     <button class="btn-fav ${isFav ? 'active' : ''}" onclick="toggleFavorite('${item.word.replace(/'/g, "\\'")}')" title="Save to Favorites" style="background: none; border: none; cursor: pointer; color: #a1a1aa; font-size: 1.2rem; padding: 0;">
@@ -288,12 +286,12 @@ function renderCards(words, resetPagination = true) {
                     </button>
                 </div>
             </div>
-            <p class="card-def" style="margin-bottom: 8px; color: #e4e4e7; font-size: 0.95rem;">
-                <strong style="color: #a1a1aa;">Meaning:</strong> ${meaningText}
+            <p class="card-def" style="margin-bottom: 8px; color: var(--text-muted); font-size: 0.95rem;">
+                <strong style="color: var(--text-main);">Meaning:</strong> ${meaningText}
             </p>
-            ${exampleText ? `<p class="card-ex" style="font-style: italic; margin-bottom: 12px; color: #a1a1aa; font-size: 0.9rem;">${exampleText}</p>` : ''}
-            <div class="card-arm" style="color: #38bdf8; font-size: 0.9rem; font-weight: 500; display: flex; align-items: center; gap: 6px;">
-                <span style="font-size: 0.8rem; font-weight: bold; color: #0284c7;">AM</span> ${armText}
+            ${exampleText ? `<p class="card-ex" style="font-style: italic; margin-bottom: 12px; color: var(--text-muted); font-size: 0.9rem;">${exampleText}</p>` : ''}
+            <div class="card-arm" style="color: var(--accent); font-size: 0.9rem; font-weight: 500; display: flex; align-items: center; gap: 6px;">
+                <span style="font-size: 0.8rem; font-weight: bold; color: var(--primary);">AM</span> ${armText}
             </div>
         `;
         grid.appendChild(card);
@@ -302,9 +300,27 @@ function renderCards(words, resetPagination = true) {
     updateLoadMoreButton();
 }
 
-// ==========================================
-// FILTER BUTTONS EVENT LISTENERS
-// ==========================================
+// SEARCH BAR EVENT LISTENER
+const globalSearch = document.getElementById('globalSearch');
+if (globalSearch) {
+    globalSearch.addEventListener('input', (e) => {
+        const query = e.target.value.toLowerCase().trim();
+        if (!query) {
+            renderCards(allWords);
+            return;
+        }
+        const filtered = allWords.filter(w => 
+            w.word.toLowerCase().includes(query) || 
+            (w.meaning && w.meaning.toLowerCase().includes(query)) ||
+            (w.definition && w.definition.toLowerCase().includes(query)) ||
+            (w.arm && w.arm.toLowerCase().includes(query)) ||
+            (w.armenian && w.armenian.toLowerCase().includes(query))
+        );
+        renderCards(filtered);
+    });
+}
+
+// FILTER BUTTONS
 function setupFilterButtons() {
     const filterBtns = document.querySelectorAll('.filter-btn');
     filterBtns.forEach(btn => {
@@ -639,7 +655,7 @@ async function fetchJSON(path) {
 }
 
 async function loadAllDatabases() {
-    // Render initial sample words instantly!
+    // Render initial sample words instantly
     renderCards(allWords);
     setupFilterButtons();
 
@@ -653,8 +669,8 @@ async function loadAllDatabases() {
     // Merge full dataset
     allWords = [...sampleWords, ...customWords, ...a1_a2, ...b1_b2, ...c1_c2, ...slang_gaming];
 
-    // Re-render with full dataset loaded
-    renderCards(allWords);
+    // Re-render with full dataset loaded (maintaining current visible page count)
+    renderCards(allWords, false);
     updateWordOfTheDay();
     updateLeaderboardUI();
     initQuizGame();
