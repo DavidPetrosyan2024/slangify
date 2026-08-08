@@ -552,12 +552,6 @@ body {
 
 footer { background: var(--bg-surface); border-top: 1px solid var(--border-color); padding: 24px 0; text-align: center; color: var(--text-muted); font-size: 0.88rem; }
 
-@media (max-width: 768px) {
-    .navbar { flex-direction: column; gap: 12px; }
-    .authors-grid { grid-template-columns: 1fr; }
-    .options-grid { grid-template-columns: 1fr; }
-}
-
 /* =========================================
    MOBILE NAVBAR — BOOTSTRAP FIX
    ========================================= */
@@ -851,5 +845,185 @@ footer { background: var(--bg-surface); border-top: 1px solid var(--border-color
 
     #mainNavbar .navbar-nav .nav-link {
         font-size: 1.05rem !important;
+    }
+}
+
+/* =========================================
+   BOOTSTRAP MOBILE NAVBAR FIX
+   ========================================= */
+
+.site-navbar {
+    width: 100%;
+    max-width: 100%;
+    overflow: visible !important;
+}
+
+/* Prevent horizontal overflow */
+html,
+body {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+/* Bootstrap mobile hamburger */
+.site-navbar .navbar-toggler {
+    width: 48px;
+    height: 44px;
+
+    padding: 0;
+
+    border: 1px solid var(--border-color) !important;
+    border-radius: 12px;
+
+    box-shadow: none !important;
+}
+
+/* Custom hamburger icon */
+.site-navbar .navbar-toggler-icon {
+    background-image: none !important;
+
+    width: 25px;
+    height: 20px;
+
+    position: relative;
+}
+
+/* Three lines */
+.site-navbar .navbar-toggler-icon::before {
+    content: "";
+
+    position: absolute;
+    left: 0;
+    top: 0;
+
+    width: 25px;
+    height: 3px;
+
+    border-radius: 10px;
+
+    background: linear-gradient(
+        90deg,
+        #7657ff,
+        #35b9e8
+    );
+
+    box-shadow:
+        0 8px 0 #7657ff,
+        0 16px 0 #35b9e8;
+}
+
+
+/* =========================================
+   MOBILE
+   ========================================= */
+
+@media (max-width: 991.98px) {
+
+    .site-navbar {
+        padding: 14px 16px !important;
+    }
+
+    .site-navbar .navbar-collapse {
+        width: 100%;
+        padding-top: 12px;
+    }
+
+    .site-navbar .navbar-nav {
+        width: 100%;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+
+        gap: 2px;
+    }
+
+    .site-navbar .nav-link {
+        width: 100%;
+
+        padding: 10px 0 !important;
+
+        white-space: normal;
+    }
+
+    /* Search + theme button */
+    .site-navbar .header-actions {
+        width: 100%;
+
+        display: flex !important;
+        flex-direction: row !important;
+
+        align-items: center;
+
+        gap: 8px;
+
+        margin-top: 10px;
+    }
+
+    .site-navbar .search-box {
+        flex: 1 1 auto;
+
+        width: auto !important;
+        min-width: 0;
+        max-width: none !important;
+    }
+
+    .site-navbar .search-box input {
+        width: 100% !important;
+        max-width: none !important;
+    }
+
+    /* Small straight theme button */
+    .site-navbar .btn-theme-toggle {
+        width: 42px !important;
+        height: 42px !important;
+
+        min-width: 42px !important;
+
+        padding: 0 !important;
+        margin: 0 !important;
+
+        flex: 0 0 42px;
+
+        display: flex !important;
+        align-items: center;
+        justify-content: center;
+
+        border-radius: 10px !important;
+
+        transform: none !important;
+        rotate: none !important;
+
+        transition:
+            background-color .2s ease,
+            border-color .2s ease !important;
+    }
+
+    .site-navbar .btn-theme-toggle:hover,
+    .site-navbar .btn-theme-toggle:focus,
+    .site-navbar .btn-theme-toggle:active {
+        transform: none !important;
+        rotate: none !important;
+        box-shadow: none !important;
+    }
+}
+
+
+/* =========================================
+   SMALL PHONES
+   ========================================= */
+
+@media (max-width: 576px) {
+
+    .site-navbar {
+        padding-left: 12px !important;
+        padding-right: 12px !important;
+    }
+
+    .site-navbar .logo {
+        font-size: 1.5rem;
+    }
+
+    .site-navbar .navbar-toggler {
+        width: 44px;
+        height: 42px;
     }
 }
