@@ -25,90 +25,69 @@
 <body class="dark-mode">
 
     <!-- HEADER & NAVBAR -->
-    <header class="navbar navbar-expand-lg site-navbar">
-    <div class="container-fluid">
+  <header class="navbar">
 
-        <!-- LOGO -->
-        <a href="#hero" class="logo navbar-brand text-decoration-none">
-            <span class="logo-icon">⚡</span>
-            <span class="logo-text">Slangify</span>
-        </a>
+    <!-- LOGO -->
+    <div class="logo">
+        <span class="logo-icon">⚡</span>
+        <span class="logo-text">Slangify</span>
+    </div>
 
-        <!-- MOBILE MENU BUTTON -->
+    <!-- MOBILE MENU BUTTON -->
+    <button
+        id="mobileMenuBtn"
+        class="mobile-menu-btn"
+        type="button"
+        aria-label="Open menu"
+        aria-expanded="false"
+    >
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+
+    <!-- NAVIGATION -->
+    <nav class="nav-links" id="mainNav">
+        <a href="#hero" class="nav-link active">Home</a>
+        <a href="#dictionary" class="nav-link">Dictionary</a>
+        <a href="#games" class="nav-link">Games</a>
+        <a href="#leaderboard" class="nav-link">Leaderboard</a>
+        <a href="#about" class="nav-link">About Us</a>
+    </nav>
+
+    <!-- SEARCH + THEME -->
+    <div class="header-actions">
+
+        <div class="search-box">
+            <span class="search-icon">🔍</span>
+
+            <input
+                type="text"
+                id="globalSearch"
+                placeholder="Search 3000+ words..."
+                autocomplete="off"
+            >
+        </div>
+
         <button
-            class="navbar-toggler"
+            id="themeToggleBtn"
+            class="btn-theme-toggle"
             type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#mainNavbar"
-            aria-controls="mainNavbar"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
+            title="Toggle Light/Dark Mode"
         >
-            <span class="navbar-toggler-icon"></span>
+            ☀️
         </button>
 
-        <!-- NAVIGATION -->
-        <div class="collapse navbar-collapse" id="mainNavbar">
+        <button
+            id="btnInstallApp"
+            class="btn-install"
+            style="display: none;"
+        >
+            📱 Install App
+        </button>
 
-            <nav class="navbar-nav mx-lg-auto nav-links">
-
-                <a href="#hero" class="nav-link active">
-                    Home
-                </a>
-
-                <a href="#dictionary" class="nav-link">
-                    Dictionary
-                </a>
-
-                <a href="#games" class="nav-link">
-                    Games
-                </a>
-
-                <a href="#leaderboard" class="nav-link">
-                    Leaderboard
-                </a>
-
-                <a href="#about" class="nav-link">
-                    About Us
-                </a>
-
-            </nav>
-
-            <!-- SEARCH + THEME -->
-            <div class="header-actions">
-
-                <div class="search-box">
-                    <span class="search-icon">🔍</span>
-
-                    <input
-                        type="text"
-                        id="globalSearch"
-                        placeholder="Search 3000+ words..."
-                        autocomplete="off"
-                    >
-                </div>
-
-                <button
-                    id="themeToggleBtn"
-                    class="btn-theme-toggle"
-                    type="button"
-                    title="Toggle Light/Dark Mode"
-                >
-                    ☀️
-                </button>
-
-                <button
-                    id="btnInstallApp"
-                    class="btn-install"
-                    style="display: none;"
-                >
-                    📱 Install App
-                </button>
-
-            </div>
-
-        </div>
     </div>
+
 </header>
 
     <main>

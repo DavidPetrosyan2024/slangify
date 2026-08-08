@@ -778,3 +778,48 @@ document.addEventListener('DOMContentLoaded', () => {
     loadAllDatabases();
 });
 
+/* =========================================================
+   MOBILE NAVIGATION
+   ========================================================= */
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const mobileMenuBtn = document.getElementById("mobileMenuBtn");
+    const mainNav = document.getElementById("mainNav");
+
+    if (!mobileMenuBtn || !mainNav) {
+        return;
+    }
+
+    mobileMenuBtn.addEventListener("click", function () {
+
+        const isOpen = mainNav.classList.toggle("mobile-open");
+
+        mobileMenuBtn.setAttribute(
+            "aria-expanded",
+            isOpen ? "true" : "false"
+        );
+
+    });
+
+
+    /* Close menu after clicking a navigation link */
+
+    const navLinks = mainNav.querySelectorAll(".nav-link");
+
+    navLinks.forEach(function (link) {
+
+        link.addEventListener("click", function () {
+
+            mainNav.classList.remove("mobile-open");
+
+            mobileMenuBtn.setAttribute(
+                "aria-expanded",
+                "false"
+            );
+
+        });
+
+    });
+
+});
