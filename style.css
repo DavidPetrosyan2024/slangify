@@ -723,3 +723,133 @@ footer { background: var(--bg-surface); border-top: 1px solid var(--border-color
         height: 40px !important;
     }
 }
+
+/* =========================================
+   MOBILE NAVBAR — FINAL iPHONE FIX
+   ========================================= */
+
+@media (max-width: 991.98px) {
+
+    /* Never allow the page to become wider than the phone */
+    html,
+    body {
+        width: 100%;
+        max-width: 100%;
+        overflow-x: hidden !important;
+    }
+
+    /* Bootstrap navbar */
+    header.navbar {
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+
+    header.navbar > .container-fluid {
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+
+    /* IMPORTANT:
+       Force Bootstrap's collapsed menu to actually collapse */
+    #mainNavbar.collapse:not(.show) {
+        display: none !important;
+    }
+
+    #mainNavbar.collapse.show {
+        display: block !important;
+        width: 100% !important;
+    }
+
+    /* Navigation must NEVER stay in one horizontal line */
+    #mainNavbar .navbar-nav {
+        width: 100% !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: stretch !important;
+
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+    }
+
+    #mainNavbar .navbar-nav .nav-link {
+        width: 100% !important;
+        display: block !important;
+
+        white-space: normal !important;
+        overflow-wrap: break-word !important;
+
+        padding: 10px 0 !important;
+    }
+
+    /* Search + theme button */
+    #mainNavbar .header-actions {
+        width: 100% !important;
+
+        display: flex !important;
+        flex-direction: row !important;
+        align-items: center !important;
+
+        gap: 8px !important;
+    }
+
+    /* Search */
+    #mainNavbar .search-box {
+        flex: 1 1 auto !important;
+
+        width: auto !important;
+        min-width: 0 !important;
+        max-width: none !important;
+
+        margin: 0 !important;
+    }
+
+    /* Theme button */
+    #mainNavbar .btn-theme-toggle {
+        flex: 0 0 42px !important;
+
+        width: 42px !important;
+        min-width: 42px !important;
+        height: 42px !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+
+        transform: none !important;
+        rotate: none !important;
+    }
+
+    /* Hamburger */
+    .navbar-toggler {
+        flex-shrink: 0 !important;
+
+        width: 48px !important;
+        height: 44px !important;
+
+        transform: none !important;
+        rotate: none !important;
+    }
+}
+
+
+/* =========================================
+   SMALL PHONES
+   ========================================= */
+
+@media (max-width: 576px) {
+
+    header.navbar {
+        padding-left: 16px !important;
+        padding-right: 16px !important;
+    }
+
+    .navbar-brand {
+        max-width: calc(100% - 60px);
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    #mainNavbar .navbar-nav .nav-link {
+        font-size: 1.05rem !important;
+    }
+}
