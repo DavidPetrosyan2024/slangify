@@ -643,22 +643,37 @@ function checkScrambleAnswer() {
 // ==========================================
 // 7. ASYNC DATABASE LOADER
 // ==========================================
+
 async function fetchJSON(path) {
     try {
         const response = await fetch(path);
-        if (!response.ok) return [];
+
+        if (!response.ok) {
+            console.warn(`Could not load ${path}: ${response.status}`);
+            return [];
+        }
+
         return await response.json();
+
     } catch (e) {
         console.warn(`Could not load ${path}`, e);
         return [];
     }
 }
 
+
 async function loadAllDatabases() {
-    // Render initial sample words instantly
-    renderCards(allWords);
+
+    // Start with the initial 8 sample words
+    allWords = [...sampleWords, ...customWords];
+
+    currentDisplayedWords = [...allWords];
+    visibleCardsCount = 8;
+
+    renderCards(currentDisplayedWords, false);
     setupFilterButtons();
 
+    // Load all dictionaries
     const [a1_a2, b1_b2, c1_c2, slang_gaming] = await Promise.all([
         fetchJSON('data/a1_a2.json'),
         fetchJSON('data/b1_b2.json'),
@@ -666,60 +681,100 @@ async function loadAllDatabases() {
         fetchJSON('data/slang_gaming.json')
     ]);
 
-    // Merge full dataset
-    allWords = [...sampleWords, ...customWords, ...a1_a2, ...b1_b2, ...c1_c2, ...slang_gaming];
+    // Merge everything
+    allWords = [
+        ...sampleWords,
+        ...customWords,
+        ...a1_a2,
+        ...b1_b2,
+        ...c1_c2,
+        ...slang_gaming
+    ];
 
-    // Re-render with full dataset loaded (maintaining current visible page count)
-    renderCards(allWords, false);
+    // IMPORTANT:
+    // Start the complete dictionary from exactly 8 words
+    currentDisplayedWords = [...allWords];
+    visibleCardsCount = 8;
+
+    // Render first 8 words
+    renderCards(currentDisplayedWords, false);
+
     updateWordOfTheDay();
     updateLeaderboardUI();
     initQuizGame();
 }
 
-// App Initialization
-document.addEventListener('DOMContentLoaded', loadAllDatabases);
 
 // ==========================================
-// 8. LOAD MORE & BUTTON CONTROL
+// 8. LOAD MORE WORDS
 // ==========================================
 
 const WORDS_PER_LOAD = 8;
 
-// Load 8 more words
+
 function loadMoreWords() {
+
     if (!currentDisplayedWords || currentDisplayedWords.length === 0) {
         return;
     }
 
-    // Add exactly 8 more cards
+    // Add exactly 8 more words
     visibleCardsCount += WORDS_PER_LOAD;
 
-    // Render without resetting pagination
+    // Never go beyond the available words
+    if (visibleCardsCount > currentDisplayedWords.length) {
+        visibleCardsCount = currentDisplayedWords.length;
+    }
+
     renderCards(currentDisplayedWords, false);
 }
 
-// Update Load More button visibility
+
+// ==========================================
+// LOAD MORE BUTTON CONTROL
+// ==========================================
+
 function updateLoadMoreButton() {
+
     const loadMoreBtn = document.getElementById('btnLoadMore');
 
-    if (!loadMoreBtn) return;
+    if (!loadMoreBtn) {
+        return;
+    }
 
-    // If there are no more words to show, hide the button
-    if (
-        !currentDisplayedWords ||
-        visibleCardsCount >= currentDisplayedWords.length
-    ) {
+    // No words → hide
+    if (!currentDisplayedWords || currentDisplayedWords.length === 0) {
         loadMoreBtn.style.display = 'none';
-    } else {
+        return;
+    }
+
+    // More words available → SHOW
+    if (visibleCardsCount < currentDisplayedWords.length) {
         loadMoreBtn.style.display = 'inline-block';
+    }
+
+    // Everything already displayed → HIDE
+    else {
+        loadMoreBtn.style.display = 'none';
     }
 }
 
-// Hide Load More button
+
 function hideLoadMoreButton() {
+
     const loadMoreBtn = document.getElementById('btnLoadMore');
 
     if (loadMoreBtn) {
         loadMoreBtn.style.display = 'none';
     }
 }
+
+
+// ==========================================
+// APP INITIALIZATION
+// ==========================================
+
+document.addEventListener('DOMContentLoaded', () => {
+    loadAllDatabases();
+});
+
